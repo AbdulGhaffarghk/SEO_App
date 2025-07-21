@@ -1,6 +1,6 @@
-// FILE: lib/screens/signup_screen.dart
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import '../widgets/socialButtons.dart';
 import 'loginScreen.dart';

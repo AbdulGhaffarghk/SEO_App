@@ -1,10 +1,10 @@
-// FILE: lib/screens/loginScreen.dart
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import '../widgets/socialButtons.dart';
 import 'signUp.dart';
-import 'package:flutter/material.dart'; // Or create a dedicated home screen file
+import 'forgotPasswordScreen.dart';
 
 // Placeholder for a screen after successful login
 class HomeScreen extends StatelessWidget {
@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 
-class LoginScreen extends StatefulWidget { // Change to StatefulWidget
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
@@ -54,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailPhoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Function to handle login
   Future<void> _loginUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? storedEmailOrPhone = prefs.getString('emailOrPhone');
@@ -62,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (_emailPhoneController.text == storedEmailOrPhone &&
         _passwordController.text == storedPassword) {
-      // Successful login
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
@@ -72,7 +70,6 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } else {
-      // Failed login
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid User or password. Please try again.')),
@@ -138,7 +135,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
+                    );
+                  },
                   child: const Text(
                     'Forgot Password?',
                     style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
@@ -151,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _loginUser, // Call the login function
+                  onPressed: _loginUser,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryBlue,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -190,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 48),
 
-              // --- Sign Up Navigation ---
+              // SignUp Navigation
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
