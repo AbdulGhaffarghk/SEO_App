@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'screens/startingScreen.dart';
+import 'package:seo/screens/CoursesScreen.dart';
+import 'package:seo/screens/DashBoardScreen.dart';
+import 'package:seo/screens/InboxScreen.dart';
+import 'package:seo/screens/NthpScreen.dart';
+import 'package:seo/screens/ProfileScreen.dart';
 import '../constants.dart';
 
 void main() {
@@ -28,7 +32,16 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(), // The app starts with the splash screen
+
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const DashBoardScreen(),
+        '/courses': (context) => const CoursesScreen(),
+        '/inbox': (context) => const InboxScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/nthp': (context) => const Nthpscreen(),
+      },
+      
     );
   }
 }
