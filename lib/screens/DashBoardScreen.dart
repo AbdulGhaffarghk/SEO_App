@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seo/constants.dart';
+import 'package:seo/screens/Dashboard%20Screens/4ButtonAdminScreen.dart';
+import 'package:seo/screens/Dashboard%20Screens/4ButtonScreen.dart';
 
 class DashBoardScreen extends StatefulWidget {
 
-  const DashBoardScreen({super.key});
+  const DashBoardScreen(this.a,{super.key,});
+  final String a;
 
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
+  String? aa;
+
   int _selectedIndex = 0;
   int _selectedCircleIndex = 0;
 
@@ -28,34 +33,40 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       } else if (index == 1) {
         Navigator.pushReplacementNamed(context, '/courses');
       } else if (index == 2) {
-        Navigator.pushReplacementNamed(context, '/inbox');
+        Navigator.pushReplacementNamed(context, '/jobs');
       } else if (index == 3) {
         Navigator.pushNamed(context, '/profile');
       }
+    }
+
+  @override
+  void initState(){
+    super.initState();
+    aa = widget.a;
   }
 
   void _onCircleTapped(int index) {
-    
+
     setState(() {
       _selectedCircleIndex = index;
     });
-    
+
     if (index == 0) {
-      Navigator.pushNamed(context, '/nthp');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => aa == "Admin" ? FourButtonAdminScreen(title[0]) : FourButtonScreen(title[0])));
     } else if (index == 1) {
-      Navigator.pushNamed(context, '/courses');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FourButtonScreen(title[1])));
     } else if (index == 2) {
-      Navigator.pushNamed(context, '/inbox');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FourButtonScreen(title[2])));
     } else if (index == 3) {
-      Navigator.pushNamed(context, '/profile');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FourButtonAdminScreen(title[3])));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
+      
       appBar: AppBar(
         toolbarHeight: 90,
         actionsPadding: EdgeInsets.only(right: 10,),
@@ -81,69 +92,72 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         // backgroundColor: Colors.amberAccent,
       ),
       ),
-      body: Column(children: [
-        Container(
-          width: double.infinity,
-          height: 230,
-          child: Card(color: primaryBlue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
-          ),
-          margin: EdgeInsets.all(30),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30, top: 20, right: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Spacer(flex: 2,),
-                    Text("TODAYS SPECIAL", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),),
-
-                    Spacer(flex: 1,),
-                
-                    Text("Hurry! Today's your last chance \nfor a discount.", style: TextStyle(fontSize: 14, color: Colors.white),),
-                    Spacer(flex: 3,),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+          Container(
+            width: double.infinity,
+            height: 230,
+            child: Card(color: primaryBlue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
+            ),
+            margin: EdgeInsets.all(30),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, top: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Spacer(flex: 2,),
+                      Text("TODAYS SPECIAL", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),),
+        
+                      Spacer(flex: 1,),
+                  
+                      Text("Hurry! Today's your last chance \nfor a discount.", style: TextStyle(fontSize: 14, color: Colors.white),),
+                      Spacer(flex: 3,),
+                    ],
+                  ),
                 ),
-              ),
-                Spacer(),
-                Text("75%", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
-                SizedBox(width: 30,),
-            ],
-          ),),
-        ),
-
-        SizedBox(height: 10,),
-
-        Container(
-          width: double.infinity,
-          height: 200,
-          padding: EdgeInsets.only(top: 20, bottom: 20),
-          child:  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ...List.generate(title.length, (index) => 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () => _onCircleTapped(index),
-                      child: CircleAvatar(
-                        backgroundColor: primaryBlue.withAlpha(30), radius: 35,
-                        child: FaIcon(titleIcons[index], color: primaryBlue, size: 30,),
+                  Spacer(),
+                  Text("75%", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),),
+                  SizedBox(width: 30,),
+              ],
+            ),),
+          ),
+        
+          SizedBox(height: 10,),
+        
+          Container(
+            width: double.infinity,
+            height: 200,
+            padding: EdgeInsets.only(top: 20, bottom: 20),
+            child:  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ...List.generate(title.length, (index) => 
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => _onCircleTapped(index),
+                        child: CircleAvatar(
+                          backgroundColor: primaryBlue.withAlpha(30), radius: 35,
+                          child: FaIcon(titleIcons[index], color: primaryBlue, size: 30,),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10,),
-                    Text(title[index], style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textGrey),),
-                  ],
+                      SizedBox(height: 10,),
+                      Text(title[index], style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textGrey),),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),        
-          ),
-      
-      ],),
+              ],
+            ),        
+            ),
+        
+        ],),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,

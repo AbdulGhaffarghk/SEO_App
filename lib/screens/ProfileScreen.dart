@@ -13,9 +13,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   int selectedIndex = 3;
 
-  var title = ["Edit profile","Settings","Security","Privacy Policy","invite Friends","Sign out"];
+  var title = ["Edit profile","Settings","Privacy Policy","invite Friends","Sign out"];
 
-  var titleIcons = [Icons.person,Icons.settings,FontAwesomeIcons.shield,Icons.screen_lock_portrait,Icons.group,FontAwesomeIcons.rightFromBracket];
+  var titleIcons = [Icons.person,Icons.settings,Icons.screen_lock_portrait,Icons.group,FontAwesomeIcons.rightFromBracket];
 
   void _onItemTapped(int index) {
     
@@ -27,10 +27,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } else if (index == 1) {
         Navigator.pushReplacementNamed(context, '/courses');
       } else if (index == 2) {
-        Navigator.pushReplacementNamed(context, '/inbox');
+        Navigator.pushReplacementNamed(context, '/jobs');
       } else if (index == 3) {
         Navigator.pushReplacementNamed(context, '/profile');
       }
+  }
+
+  void navigatorToButton(int index) {
+    
+    if (index == 0) {
+      // Navigate to Edit Profile
+      Navigator.pushNamed(context, '/editProfile');
+    } else if (index == 1) {
+      // Navigate to Settings
+      Navigator.pushNamed(context, '/settings');
+    } else if (index == 2) {
+      // Navigate to Privacy Policy
+      Navigator.pushNamed(context, '/privacyPolicy');
+    } else if (index == 3) {
+      // Navigate to Invite Friends
+      Navigator.pushNamed(context, '/inviteFriends');
+    } else if (index == 4) {
+      // Sign out logic here
+      Navigator.pushReplacementNamed(context, '/onboarding');
+
+    }
   }
 
   @override
@@ -58,6 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Expanded(
           child: ListView.separated(itemBuilder: (context, index) {
           return ListTile(
+            onTap: () => navigatorToButton(index),
             leading: CircleAvatar(
               backgroundColor: primaryBlue.withAlpha(35),
               child: FaIcon(titleIcons[index],
