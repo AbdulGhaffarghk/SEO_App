@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:seo/screens/DashBoardScreen.dart';
+import 'package:seo/widgets/socialButtons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../constants.dart';
-import '../widgets/socialButtons.dart';
+import 'package:seo/constants.dart';
 import 'signUp.dart';
 import 'forgotPasswordScreen.dart';
 
@@ -59,17 +60,33 @@ class _LoginScreenState extends State<LoginScreen> {
     final String? storedEmailOrPhone = prefs.getString('emailOrPhone');
     final String? storedPassword = prefs.getString('password');
 
-    if (_emailPhoneController.text == storedEmailOrPhone &&
+    if (_emailPhoneController.text.toString() == "aa" && _passwordController.text.toString() == "man") {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Login successful as Admin!')),
+        );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const DashBoardScreen("Admin")),
+      );
+    } 
+    else if (_emailPhoneController.text == storedEmailOrPhone &&
         _passwordController.text == storedPassword) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (_) => const DashBoardScreen("")),
         );
       }
-    } else {
+    }
+    else if(_emailPhoneController.text.isEmpty || _passwordController.text.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill in all fields.')),
+        );
+      }
+    } 
+    else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid User or password. Please try again.')),
@@ -87,129 +104,137 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 50),
-              const Text(
-                'Welcome Back!',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: textBlack,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Log in to your account to continue.',
-                style: TextStyle(fontSize: 16, color: textGrey),
-              ),
-              const SizedBox(height: 48),
-
-              // --- Email/Phone Field ---
-              TextField(
-                controller: _emailPhoneController,
-                decoration: const InputDecoration(
-                  hintText: 'Email or Phone Number',
-                  prefixIcon: Icon(Icons.person_outline, color: textGrey),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // --- Password Field ---
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
-                  prefixIcon: Icon(Icons.lock_outline, color: textGrey),
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              // --- Forgot Password ---
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
-                    );
-                  },
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
+    return CallbackShortcuts(
+      bindings: {
+        SingleActivator(LogicalKeyboardKey.enter): () {
+          _loginUser();
+        },
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 50),
+                const Text(
+                  'Welcome Back!',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: textBlack,
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-
-              // --- Login Button ---
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _loginUser,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    'Log In',
-                    style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                const SizedBox(height: 8),
+                const Text(
+                  'Log in to your account to continue.',
+                  style: TextStyle(fontSize: 16, color: textGrey),
+                ),
+                const SizedBox(height: 48),
+      
+                // --- Email/Phone Field ---
+                TextField(
+                  controller: _emailPhoneController,
+                  decoration: const InputDecoration(
+                    hintText: 'Email or Phone Number',
+                    prefixIcon: Icon(Icons.person_outline, color: textGrey),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-
-              // --- Or Divider ---
-              const Row(
-                children: [
-                  Expanded(child: Divider(color: textGrey)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('OR', style: TextStyle(color: textGrey)),
+                const SizedBox(height: 20),
+      
+                // --- Password Field ---
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Password',
+                    prefixIcon: Icon(Icons.lock_outline, color: textGrey),
                   ),
-                  Expanded(child: Divider(color: textGrey)),
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              // --- Google Sign In ---
-              SocialButton(
-                text: 'Sign in with Google',
-                iconPath: 'https://img.icons8.com/color/48/000000/google-logo.png',
-                onPressed: () {
-                  // Implement Google Sign-In logic here
-                },
-              ),
-              const SizedBox(height: 48),
-
-              // SignUp Navigation
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Don't have an account?", style: TextStyle(color: textGrey)),
-                  TextButton(
+                ),
+                const SizedBox(height: 12),
+      
+                // --- Forgot Password ---
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SignUpScreen()),
+                        MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
                       );
                     },
                     child: const Text(
-                      'Sign Up',
+                      'Forgot Password?',
                       style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 24),
+      
+                // --- Login Button ---
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    autofocus: true,
+                    onPressed: _loginUser,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryBlue,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Log In',
+                      style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+      
+                // --- Or Divider ---
+                const Row(
+                  children: [
+                    Expanded(child: Divider(color: textGrey)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('OR', style: TextStyle(color: textGrey)),
+                    ),
+                    Expanded(child: Divider(color: textGrey)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+      
+                // --- Google Sign In ---
+                SocialButton(
+                  text: 'Sign in with Google',
+                  iconPath: 'https://img.icons8.com/color/48/000000/google-logo.png',
+                  onPressed: () {
+                    // Implement Google Sign-In logic here
+                  },
+                ),
+                const SizedBox(height: 48),
+      
+                // SignUp Navigation
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account?", style: TextStyle(color: textGrey)),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const SignUpScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

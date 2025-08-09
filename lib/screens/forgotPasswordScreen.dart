@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
-import 'loginScreen.dart'; //for pop
+import 'package:seo/constants.dart';
+
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});

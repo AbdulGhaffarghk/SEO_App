@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+import 'package:seo/constants.dart';
+
 import 'loginScreen.dart';
 
 // Data model for each onboarding page

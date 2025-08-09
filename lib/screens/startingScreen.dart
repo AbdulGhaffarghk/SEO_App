@@ -1,10 +1,11 @@
 // FILE: lib/screens/splash_screen.dart
 import 'package:flutter/material.dart';
+import 'package:seo/constants.dart';
+import 'package:seo/screens/DashBoardScreen.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
-import '../constants.dart'; // Import color constants
+// Import color constants
 import 'onBoardingScreen.dart'; // Import the onboarding screen
-import 'loginScreen.dart'; // Import the login screen (and HomeScreen)
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,6 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // User is already "logged in" (has credentials stored)
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()), // Navigate to home if logged in
+          MaterialPageRoute(builder: (_) => const DashBoardScreen("")), // Navigate to home if logged in
         );
       }
     } else {

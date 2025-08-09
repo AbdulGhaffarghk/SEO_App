@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:seo/constants.dart';
+import 'package:seo/widgets/socialButtons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../constants.dart';
-import '../widgets/socialButtons.dart';
+
 import 'loginScreen.dart';
 
 class SignUpScreen extends StatefulWidget { // Change to StatefulWidget
